@@ -1,0 +1,1001 @@
+// import 'package:flutter/material.dart';
+// import 'package:bbs_booking_system/controller/aturtutupController.dart';
+
+// class AturPembagianJamHargaAdmin extends StatefulWidget {
+//   @override
+//   _AturPembagianJamHargaAdminState createState() =>
+//       _AturPembagianJamHargaAdminState();
+// }
+
+// class _AturPembagianJamHargaAdminState extends State<AturPembagianJamHargaAdmin> {
+  
+//   final StoreController _storeController = StoreController();
+//   Map<String, dynamic>? operationalHours;
+//   bool isActive = true;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _fetchOperationalHours();
+//   }
+//   Future<void> _fetchOperationalHours() async {
+//     operationalHours = await _storeController.getOperationalHours();
+//     _updateStoreStatusBasedOnTime();
+//   }
+
+//   void _updateStoreStatusBasedOnTime() async {
+//     if (operationalHours == null) return;
+
+//     // Check if the store is closed today
+//     DateTime? closedDate = await _storeController.getClosedDate();
+//     DateTime today = DateTime.now();
+//     if (closedDate != null &&
+//         closedDate.year == today.year &&
+//         closedDate.month == today.month &&
+//         closedDate.day == today.day) {
+//       setState(() {
+//         isActive = false;
+//       });
+//       return;
+//     }
+//   }
+
+//   Future<Map<String, dynamic>> _getOperationalHours() async {
+//     if (operationalHours == null) {
+//       await _fetchOperationalHours();
+//     }
+//     return operationalHours!;
+//   }
+
+//   List<TimeOfDay> _generateTimeList() {
+//     if (operationalHours == null) return [];
+
+//     int openingHour = operationalHours!['opening_time']['hour'];
+//     int closingHour = operationalHours!['closing_time']['hour'];
+
+//     List<TimeOfDay> times = [];
+//     for (int hour = openingHour; hour < closingHour; hour++) {
+//       times.add(TimeOfDay(hour: hour, minute: 0));
+//     }
+//     return times;
+//   }
+
+//   String? selectedStartTimeHappyHour;
+//   String? selectedEndTimeHappyHour;
+
+//   String? selectedStartTime1;
+//   String? selectedEndTime1;
+
+//   String? selectedStartTime2;
+//   String? selectedEndTime2;
+
+//   String? selectedStartTime3;
+//   String? selectedEndTime3;
+
+//   String? selectedStartTime4;
+//   String? selectedEndTime4;
+
+//   String? selectedStartTime5;
+//   String? selectedEndTime5;
+
+//   String? selectedStartTime6;
+//   String? selectedEndTime6;
+
+//   List<String> timeOptions = [
+//     '10.00',
+//     '12.00',
+//     '14.00',
+//     '16.00',
+//     '18.00',
+//     '20.00',
+//     '23.00'
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double screenWidth = MediaQuery.of(context).size.width;
+//     final Color kuningBBS = Color(0xFFFFB600);
+
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text(
+//           "Atur Jam & Harga",
+//           style: TextStyle(fontWeight: FontWeight.bold),
+//         ),
+//         leading: IconButton(
+//           icon: Icon(Icons.arrow_back),
+//           onPressed: () {
+//             Navigator.pop(context);
+//           },
+//         ),
+//       ),
+//       body: Stack(
+//         children: [
+//           SingleChildScrollView(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05,
+//                       top: screenWidth * 0.175),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Happy Hour',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTimeHappyHour,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTimeHappyHour = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTimeHappyHour,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTimeHappyHour = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 1',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime1,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime1 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime1,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime1 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 2 (Opsional)',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime2,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime2 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime2,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime2 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 3 (Opsional)',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime3,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime3 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime3,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime3 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 4 (Opsional)',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime4,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime4 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime4,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime4 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.05),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 5 (Opsional)',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime5,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime5 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime5,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime5 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: screenWidth * 0.05,
+//                       right: screenWidth * 0.05,
+//                       bottom: screenWidth * 0.2),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                         border: Border.all(
+//                             color: kuningBBS, width: screenWidth * 0.005),
+//                         borderRadius: BorderRadius.all(
+//                             Radius.circular(screenWidth * 0.03))),
+//                     child: Padding(
+//                       padding: EdgeInsets.all(screenWidth * 0.02),
+//                       child: Column(
+//                         // crossAxisAlignment: CrossAxisAlignment.start,
+//                         mainAxisAlignment: MainAxisAlignment.start,
+//                         children: [
+//                           Text(
+//                             'Kategori 6 (Opsional)',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w600,
+//                                 fontSize: screenWidth * 0.045),
+//                           ),
+//                           SizedBox(
+//                             height: screenWidth * 0.02,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                             children: [
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Awal'),
+//                                     DropdownButton<String>(
+//                                       value: selectedStartTime6,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedStartTime6 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               ),
+//                               Center(
+//                                 child: Column(
+//                                   children: [
+//                                     Text('Jam Akhir'),
+//                                     DropdownButton<String>(
+//                                       value: selectedEndTime6,
+//                                       hint: Text('XX.XX'),
+//                                       onChanged: (String? newValue) {
+//                                         setState(() {
+//                                           selectedEndTime6 = newValue;
+//                                         });
+//                                       },
+//                                       items: timeOptions
+//                                           .map<DropdownMenuItem<String>>(
+//                                               (String value) {
+//                                         return DropdownMenuItem<String>(
+//                                           value: value,
+//                                           child: Text(
+//                                             value,
+//                                             style: TextStyle(
+//                                               fontWeight: FontWeight.bold,
+//                                               fontSize: screenWidth * 0.075,
+//                                             ),
+//                                           ),
+//                                         );
+//                                       }).toList(),
+//                                     ),
+//                                   ],
+//                                 ),
+//                               )
+//                             ],
+//                           ),
+//                           SizedBox(height: screenWidth * 0.01),
+//                           Text('Harga'),
+//                           SizedBox(height: screenWidth * 0.005),
+//                           Container(
+//                             width: screenWidth * 0.5,
+//                             child: TextField(
+//                               keyboardType: TextInputType.number,
+//                               decoration: InputDecoration(
+//                                 border: OutlineInputBorder(),
+//                                 hintText: 'Masukkan Harga',
+//                               ),
+//                               onChanged: (value) {
+//                                 // Lakukan sesuatu saat harga berubah
+//                               },
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//           Container(
+//             decoration: BoxDecoration(
+//               color: kuningBBS,
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: const Color.fromARGB(255, 38, 38, 38).withOpacity(0.3),
+//                   spreadRadius: 2,
+//                   blurRadius: 5,
+//                   offset: Offset(0, 3),
+//                 ),
+//               ],
+//             ),
+//             child: Padding(
+//               padding: EdgeInsets.all(screenWidth * 0.03),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                 children: [
+//                   FutureBuilder<Map<String, dynamic>>(
+//                     future: _getOperationalHours(), // Make sure this function is defined and returns the operational hours
+//                     builder: (BuildContext context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+//                       if (snapshot.connectionState == ConnectionState.waiting) {
+//                         return CircularProgressIndicator();
+//                       } else if (snapshot.hasError) {
+//                         return Text('Error: ${snapshot.error}');
+//                       } else if (!snapshot.hasData) {
+//                         return Text('No data available');
+//                       }
+
+//                       Map<String, dynamic> data = snapshot.data!;
+//                       TimeOfDay openingTime = TimeOfDay(
+//                         hour: data['opening_time']['hour'],
+//                         minute: data['opening_time']['minute'],
+//                       );
+//                       TimeOfDay closingTime = TimeOfDay(
+//                         hour: data['closing_time']['hour'],
+//                         minute: data['closing_time']['minute'],
+//                       );
+
+//                       String openingTimeStr = openingTime.format(context);
+//                       String closingTimeStr = closingTime.format(context);
+                    
+//                     return Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         children: [
+//                           Text(
+//                             'Jam Operasional : $openingTimeStr - $closingTimeStr',
+//                             style: TextStyle(
+//                               fontSize: screenWidth * 0.045,
+//                               fontWeight: FontWeight.w600,
+//                             ), // Adjust the style as needed
+//                           ),
+//                         ],
+//                       );
+//                     },
+//                   )
+//                 ],
+//               ),
+//             ),
+//           ),
+//           Center(
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.end,
+//               children: [
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       top: screenWidth * 0.05, bottom: screenWidth * 0.05),
+//                   child: SizedBox(
+//                     width: screenWidth * 0.85,
+//                     child: ElevatedButton(
+//                       onPressed: () {},
+//                       style: ElevatedButton.styleFrom(
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(10),
+//                         ),
+//                         backgroundColor: kuningBBS,
+//                         elevation: screenWidth * 0.02,
+//                       ),
+//                       child: Text(
+//                         'Simpan',
+//                         style: TextStyle(
+//                           color: Colors.white,
+//                           fontWeight: FontWeight.w600,
+//                           fontSize: screenWidth * 0.045,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

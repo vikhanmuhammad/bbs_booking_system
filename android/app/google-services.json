@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "10808709308",
+    "project_id": "bbsbookingsystem",
+    "storage_bucket": "bbsbookingsystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10808709308:android:2f7b7fda69575ff71900b9",
+        "android_client_info": {
+          "package_name": "com.example.bbs_booking_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDuDyWcAD4dfJrppJJ_q8g5fhU03hOswU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
